@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rockport Proving Grounds</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <div class="viewport-wrapper">
+      <canvas id="viewport" width="1024" height="576" aria-label="Game canvas"></canvas>
+      <div class="game-overlay">
+        <canvas id="minimap" class="is-hidden" width="256" height="256" aria-hidden="true"></canvas>
+        <div id="dash-cluster" class="dash-cluster is-hidden" aria-hidden="true">
+          <div class="dash-speed"><span id="dash-speed-value">0</span><span class="unit">mph</span></div>
+          <div class="dash-rpm">RPM <span id="dash-rpm-value">0</span></div>
+          <div class="dash-gear">Gear <span id="dash-gear-value">N</span></div>
+        </div>
+        <div id="race-hint" class="race-hint is-hidden" aria-hidden="true"></div>
+        <div id="pause-overlay" class="pause-overlay is-hidden" aria-hidden="true">
+          <div class="pause-card">
+            <h2>Paused</h2>
+            <p>Press Escape to resume driving.</p>
+            <button id="save-button" type="button">Save Game</button>
+            <div class="pause-car-swap">
+              <label for="pause-car-select">Load a different car</label>
+              <div class="pause-car-actions">
+                <select id="pause-car-select" aria-label="Choose car for this session"></select>
+                <button id="pause-car-load" type="button">Load Car</button>
+              </div>
+              <p id="pause-car-status" class="hint is-hidden" role="status" aria-live="polite"></p>
+            </div>
+            <button id="resume-button" type="button">Resume</button>
+            <button id="exit-button" type="button">Exit to Garage</button>
+            <p id="save-status" class="hint is-hidden" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+        <div id="race-menu" class="race-menu is-hidden" aria-hidden="true">
+          <div class="race-menu-card" role="dialog" aria-modal="true" aria-labelledby="race-menu-title">
+            <h2 id="race-menu-title">Time Trial</h2>
+            <p id="race-menu-detail">Ready to race?</p>
+            <div class="race-menu-actions">
+              <button id="race-menu-start" type="button">Start Race</button>
+              <button id="race-menu-cancel" type="button" class="button-ghost">Quit</button>
+            </div>
+          </div>
+        </div>
+        <div id="race-complete" class="race-complete-overlay is-hidden" aria-hidden="true">
+          <div class="race-complete-card" role="dialog" aria-modal="true" aria-labelledby="race-complete-heading">
+            <h2 id="race-complete-heading">Time Trial Complete</h2>
+            <p id="race-complete-time">00:00.000</p>
+            <p id="race-complete-summary" class="race-complete-summary"></p>
+            <div class="race-leaderboard">
+              <h3>Leaderboard</h3>
+              <ol id="race-complete-leaderboard"></ol>
+            </div>
+            <button id="race-complete-close" type="button">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="panel">
+      <h1>Rockport Proving Grounds</h1>
+      <section class="car-picker">
+        <label for="car-select">Select your car</label>
+        <select id="car-select" aria-label="Select vehicle"></select>
+        <button id="start-button" type="button" disabled>Load Vehicle</button>
+        <button id="resume-save-button" type="button" class="button-ghost is-hidden">Load Saved Game</button>
+        <p class="hint" id="car-summary">Choose a car to review its specs and begin.</p>
+        <p class="hint is-hidden" id="savegame-hint"></p>
+      </section>
+      <hr>
+      <p class="hint">Experience the new vehicle dynamics package. Use WASD or the arrow keys to steer, space to brake, and press R to reset to the garage.</p>
+      <dl class="readout">
+        <div>
+          <dt>Car</dt>
+          <dd><span id="stat-car">-</span></dd>
+        </div>
+        <div>
+          <dt>Speed</dt>
+          <dd><span id="stat-speed">0</span> km/h</dd>
+        </div>
+        <div>
+          <dt>Heading</dt>
+          <dd><span id="stat-heading">0</span>°</dd>
+        </div>
+        <div>
+          <dt>Position</dt>
+          <dd><span id="stat-position">0, 0</span></dd>
+        </div>
+        <div>
+          <dt>Zone</dt>
+          <dd><span id="stat-zone">-</span></dd>
+        </div>
+        <div>
+          <dt>Collisions</dt>
+          <dd><span id="stat-collisions">0</span></dd>
+        </div>
+        <div>
+          <dt>Transmission</dt>
+          <dd><span id="stat-transmission">Automatic</span></dd>
+        </div>
+        <div>
+          <dt>Gear</dt>
+          <dd><span id="stat-gear">-</span></dd>
+        </div>
+        <div>
+          <dt>RPM</dt>
+          <dd><span id="stat-rpm">0</span></dd>
+        </div>
+        <div>
+          <dt>Throttle</dt>
+          <dd><span id="stat-throttle">0</span>%</dd>
+        </div>
+        <div>
+          <dt>Brake</dt>
+          <dd><span id="stat-brake">0</span>%</dd>
+        </div>
+        <div>
+          <dt>Long G</dt>
+          <dd><span id="stat-longitudinal">0.00</span></dd>
+        </div>
+        <div>
+          <dt>Lat G</dt>
+          <dd><span id="stat-lateral">0.00</span></dd>
+        </div>
+      </dl>
+      <h2 class="panel-subtitle">Vehicle Specs</h2>
+      <dl class="readout specs-readout">
+        <div>
+          <dt>Year</dt>
+          <dd><span id="stat-year">-</span></dd>
+        </div>
+        <div>
+          <dt>Origin</dt>
+          <dd><span id="stat-origin">-</span></dd>
+        </div>
+        <div>
+          <dt>Power</dt>
+          <dd><span id="stat-power">-</span> hp</dd>
+        </div>
+        <div>
+          <dt>Torque</dt>
+          <dd><span id="stat-torque">-</span></dd>
+        </div>
+        <div>
+          <dt>Drive</dt>
+          <dd><span id="stat-drive">-</span></dd>
+        </div>
+        <div>
+          <dt>Mass</dt>
+          <dd><span id="stat-mass">-</span> kg</dd>
+        </div>
+        <div>
+          <dt>Rev Limit</dt>
+          <dd><span id="stat-revlimit">-</span></dd>
+        </div>
+        <div>
+          <dt>Brake HP</dt>
+          <dd><span id="stat-brakehp">-</span></dd>
+        </div>
+        <div>
+          <dt>Final Drive</dt>
+          <dd><span id="stat-finaldrive">-</span></dd>
+        </div>
+        <div>
+          <dt>Gear Count</dt>
+          <dd><span id="stat-gearcount">-</span></dd>
+        </div>
+        <div>
+          <dt>Gear Ratios</dt>
+          <dd><span id="stat-gearratios">-</span></dd>
+        </div>
+        <div>
+          <dt>Drag Coeff</dt>
+          <dd><span id="stat-drag">-</span></dd>
+        </div>
+        <div>
+          <dt>Downforce Coeff</dt>
+          <dd><span id="stat-downforce">-</span></dd>
+        </div>
+        <div>
+          <dt>Frontal Area</dt>
+          <dd><span id="stat-frontal">-</span></dd>
+        </div>
+        <div>
+          <dt>Wheelbase</dt>
+          <dd><span id="stat-wheelbase">-</span></dd>
+        </div>
+        <div>
+          <dt>Track Width</dt>
+          <dd><span id="stat-track">-</span></dd>
+        </div>
+        <div>
+          <dt>CG Height</dt>
+          <dd><span id="stat-cg">-</span></dd>
+        </div>
+        <div>
+          <dt>Front Weight</dt>
+          <dd><span id="stat-weightfront">-</span></dd>
+        </div>
+        <div>
+          <dt>Wheel Radius</dt>
+          <dd><span id="stat-wheelradius">-</span></dd>
+        </div>
+        <div>
+          <dt>Front Grip</dt>
+          <dd><span id="stat-frontgrip">-</span></dd>
+        </div>
+        <div>
+          <dt>Rear Grip</dt>
+          <dd><span id="stat-reargrip">-</span></dd>
+        </div>
+        <div>
+          <dt>Front Brake Torque</dt>
+          <dd><span id="stat-brake-front">-</span> Nm</dd>
+        </div>
+        <div>
+          <dt>Rear Brake Torque</dt>
+          <dd><span id="stat-brake-rear">-</span> Nm</dd>
+        </div>
+        <div>
+          <dt>Brake Bias (F)</dt>
+          <dd><span id="stat-brakebias">-</span></dd>
+        </div>
+        <div>
+          <dt>Drivetrain Eff.</dt>
+          <dd><span id="stat-drivetrain">-</span></dd>
+        </div>
+        <div>
+          <dt>Rolling Res.</dt>
+          <dd><span id="stat-rolling">-</span></dd>
+        </div>
+        <div>
+          <dt>Sources</dt>
+          <dd><span id="stat-sources">-</span></dd>
+        </div>
+      </dl>
+      <div class="actions">
+        <button id="reset-button" type="button">Reset Vehicle</button>
+        <label class="toggle">
+          <input id="debug-toggle" type="checkbox">
+          <span>Show colliders</span>
+        </label>
+      </div>
+      <p class="hint">Press M to toggle manual transmission. In manual mode use X to upshift, Z to downshift (tap Z past neutral to engage reverse).</p>
+    </aside>
+  </main>
+  <div id="main-menu-overlay" class="main-menu-overlay is-hidden" aria-hidden="true">
+    <div class="menu-card" role="dialog" aria-modal="true" aria-labelledby="menu-heading">
+      <h1 id="menu-heading">Rockport Proving Grounds</h1>
+      <p class="menu-subtitle">Select a saved game to continue or start a new game.</p>
+      <button id="menu-new-game" type="button">New Game</button>
+      <section class="menu-saves">
+        <h2>Load Saved Game</h2>
+        <ul id="save-slot-list" class="save-slot-list"></ul>
+        <p id="no-saves-message" class="hint is-hidden">No saved games yet.</p>
+      </section>
+      <button id="menu-close-button" type="button" class="button-ghost is-hidden">Back</button>
+    </div>
+  </div>
+  <script src="./lib/check2d/index.js"></script>
+  <script src="./carSpecs.js"></script>
+  <script src="./carPhysics.js"></script>
+  <script>
+    window.ROCKPORT_CALIBRATION_OPTIONS = window.ROCKPORT_CALIBRATION_OPTIONS || null;
+  </script>
+  <script src="./main.js"></script>
+</body>
+</html>

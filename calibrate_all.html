@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rockport — Recalibrate All Cars</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; background:#071027; color:#e6eef6; margin:16px; }
+    h1 { margin: 0 0 8px 0; font-size:18px }
+    #log { max-height:220px; overflow:auto; background:#071827; border:1px solid #123; padding:8px; margin-bottom:8px }
+    #calibCanvas { display:block; background:#01030a; border:1px solid #234; width:100%; max-width:1280px; height:640px }
+    .small { font-size:12px; color:#9fb0c8 }
+    button { margin-right:8px }
+  </style>
+</head>
+<body>
+  <h1>Rockport — Recalibrate All Cars</h1>
+  <div class="small">Open this file (double-click the file in your file manager). It will auto-start. Double-click the page to re-run.</div>
+  <div id="log"></div>
+  <!-- The game expects a canvas with id 'viewport' and several HUD elements. Provide minimal placeholders. -->
+  <div class="viewport-wrapper">
+    <canvas id="viewport" width="1280" height="640"></canvas>
+    <canvas id="minimap" width="256" height="256" style="display:none"></canvas>
+    <div id="dash-cluster" style="display:none"></div>
+    <div id="pause-overlay" class="is-hidden" style="display:none"></div>
+  </div>
+
+  <!-- core project scripts (load order matters) -->
+  <script src="lib/check2d/index.js"></script>
+  <script src="carPhysics.js"></script>
+  <script src="carSpecs.js"></script>
+  <!-- Before loading main.js make sure every catalog entry is unverified and set default calibration options. -->
+  <script>
+    try {
+      // carSpecs exports catalog as globalThis.RockportCarCatalog; ensure the two target
+      // Lamborghinis are treated as unverified for this run.
+      const catalog = globalThis.RockportCarCatalog ?? window.CAR_CATALOG ?? null;
+      if (catalog && Array.isArray(catalog)) {
+        for (const c of catalog) {
+          if (!c || !c.id || !c.specs) continue;
+          if (c.id === '1973-lamborghini-urraco-p250' || c.id === '1985-lamborghini-jalpa-p350') {
+            c.specs.performanceVerified = false;
+          }
+        }
+      }
+    } catch (_e) {
+      // ignore
+    }
+    // Instruct bootstrap to use these calibration options (per-car timeout and iteration budget)
+    window.ROCKPORT_CALIBRATION_OPTIONS = window.ROCKPORT_CALIBRATION_OPTIONS || {
+      perCarTimeoutMs: 120000,
+      maxIterations: 12
+    };
+  <!-- Watcher: copy simple measurable fields from carVerificationManager.records to a plain object for easier extraction by headless tools -->
+  <script>
+    (function () {
+      // Create the results object early so the headless runner can access it.
+      window.__CALIB_RESULTS = window.__CALIB_RESULTS || {};
+      function copyRecords() {
+        try {
+          const mgr = globalThis.carVerificationManager;
+          if (!mgr || !mgr.records) return;
+          for (const [id, rec] of mgr.records.entries()) {
+            if (!rec) continue;
+            window.__CALIB_RESULTS[id] = {
+              verified: !!rec.verified,
+              iterations: Number.isFinite(rec.iterations) ? rec.iterations : null,
+              note: typeof rec.note === 'string' ? rec.note : null,
+              measured: rec.measured
+                ? {
+                    zeroToHundredSec: Number.isFinite(rec.measured.zeroToHundredSec)
+                      ? rec.measured.zeroToHundredSec
+                      : null,
+                    zeroToHundredReached: !!rec.measured.zeroToHundredReached,
+                    topSpeedKph: Number.isFinite(rec.measured.topSpeedKph)
+                      ? rec.measured.topSpeedKph
+                      : null,
+                    topSpeedDurationSec: Number.isFinite(rec.measured.topSpeedDurationSec)
+                      ? rec.measured.topSpeedDurationSec
+                      : null
+                  }
+                : null,
+              target: rec.target
+                ? {
+                    zeroToHundredSec: Number.isFinite(rec.target.zeroToHundredSec)
+                      ? rec.target.zeroToHundredSec
+                      : null,
+                    topSpeedKph: Number.isFinite(rec.target.topSpeedKph)
+                      ? rec.target.topSpeedKph
+                      : null
+                  }
+                : null
+            };
+          }
+        } catch (_e) {
+          // ignore
+        }
+      }
+      setInterval(copyRecords, 200);
+    })();
+  </script>
+
+  <script src="main.js"></script>
+
+  <script>
+    function log(msg) {
+      const d = document.getElementById('log');
+      const p = document.createElement('div');
+      p.textContent = (new Date()).toLocaleTimeString() + ' — ' + String(msg);
+      d.appendChild(p);
+      d.scrollTop = d.scrollHeight;
+      console.log(msg);
+    }
+
+    // Provide a small helper: double-click the page to reload (re-run bootstrap) and re-calibrate.
+    window.addEventListener('dblclick', () => {
+      log('Double-click detected: reloading page to re-run calibration...');
+      // Reload the page which will re-run bootstrap and calibration
+      window.location.reload();
+    });
+    </script>
+    })();
+  </script>
+</body>
+</html>

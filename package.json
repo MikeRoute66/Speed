@@ -1,0 +1,24 @@
+{
+  "devDependencies": {
+    "playwright": "^1.56.1"
+  },
+  "name": "rockport",
+  "version": "1.0.0",
+  "main": "main.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "tests"
+  },
+  "dependencies": {
+    "playwright-core": "^1.56.1",
+    "puppeteer": "^24.27.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

@@ -1,0 +1,235 @@
+{
+  "processed": [
+    "Classic Car.png",
+    "Classic Racecar.png",
+    "Exotic.png",
+    "F1.png",
+    "Ferrari.png",
+    "Lamborghini.png",
+    "Modern Muscle.png",
+    "Police Car.png",
+    "Porsche.png",
+    "Retro Muscle.png",
+    "Retro Mustang.png",
+    "Sedan.png"
+  ],
+  "skipped": [],
+  "meta": {
+    "Classic Car.png": {
+      "original_size": [
+        1024,
+        1024
+      ],
+      "cropped_size": [
+        1006,
+        629
+      ],
+      "crop_bbox": [
+        18,
+        137,
+        1024,
+        766
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Classic Car.png"
+    },
+    "Classic Racecar.png": {
+      "original_size": [
+        806,
+        432
+      ],
+      "cropped_size": [
+        806,
+        432
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        806,
+        432
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Classic Racecar.png"
+    },
+    "Exotic.png": {
+      "original_size": [
+        129,
+        262
+      ],
+      "cropped_size": [
+        129,
+        262
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        129,
+        262
+      ],
+      "rotation_suggestion_degrees": 90,
+      "out_path": "assets/Car Sprites/cropped/Exotic.png"
+    },
+    "F1.png": {
+      "original_size": [
+        746,
+        344
+      ],
+      "cropped_size": [
+        746,
+        344
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        746,
+        344
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/F1.png"
+    },
+    "Ferrari.png": {
+      "original_size": [
+        955,
+        442
+      ],
+      "cropped_size": [
+        940,
+        442
+      ],
+      "crop_bbox": [
+        8,
+        0,
+        948,
+        442
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Ferrari.png"
+    },
+    "Lamborghini.png": {
+      "original_size": [
+        325,
+        155
+      ],
+      "cropped_size": [
+        325,
+        155
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        325,
+        155
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Lamborghini.png"
+    },
+    "Modern Muscle.png": {
+      "original_size": [
+        840,
+        859
+      ],
+      "cropped_size": [
+        840,
+        859
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        840,
+        859
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Modern Muscle.png"
+    },
+    "Police Car.png": {
+      "original_size": [
+        51,
+        109
+      ],
+      "cropped_size": [
+        51,
+        109
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        51,
+        109
+      ],
+      "rotation_suggestion_degrees": 90,
+      "out_path": "assets/Car Sprites/cropped/Police Car.png"
+    },
+    "Porsche.png": {
+      "original_size": [
+        68,
+        136
+      ],
+      "cropped_size": [
+        68,
+        136
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        68,
+        136
+      ],
+      "rotation_suggestion_degrees": 90,
+      "out_path": "assets/Car Sprites/cropped/Porsche.png"
+    },
+    "Retro Muscle.png": {
+      "original_size": [
+        1024,
+        1024
+      ],
+      "cropped_size": [
+        1024,
+        961
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        1024,
+        961
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Retro Muscle.png"
+    },
+    "Retro Mustang.png": {
+      "original_size": [
+        283,
+        112
+      ],
+      "cropped_size": [
+        283,
+        112
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        283,
+        112
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Retro Mustang.png"
+    },
+    "Sedan.png": {
+      "original_size": [
+        600,
+        600
+      ],
+      "cropped_size": [
+        600,
+        600
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        600,
+        600
+      ],
+      "rotation_suggestion_degrees": 0,
+      "out_path": "assets/Car Sprites/cropped/Sedan.png"
+    }
+  }
+}

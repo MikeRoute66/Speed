@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Sprite Preview - Original / Cropped / Rotated</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; padding: 18px; }
+    .row { display:flex; gap: 18px; align-items: center; margin-bottom: 18px; }
+    .col { width: 220px; text-align:center; }
+    img { max-width: 200px; max-height: 160px; border: 1px solid #ddd; background: #222; }
+    h1 { font-size: 18px; margin-bottom: 8px; }
+    .label { font-size: 12px; color:#666; }
+  </style>
+</head>
+<body>
+  <h1>Sprite Preview — Original / Cropped / Rotated</h1>
+  <p>Shows original asset, cropped output (if present), and rotated output (if present).</p>
+  <div id="list"></div>
+
+  <script>
+    const sprites = [
+      'Classic Car.png','Classic Racecar.png','Exotic.png','F1.png','Ferrari.png','Lamborghini.png','Modern Muscle.png','Police Car.png','Porsche.png','Retro Muscle.png','Retro Mustang.png','Sedan.png'
+    ];
+    const container = document.getElementById('list');
+    sprites.forEach((name) => {
+      const row = document.createElement('div'); row.className='row';
+      const orig = document.createElement('div'); orig.className='col';
+      const crop = document.createElement('div'); crop.className='col';
+      const rot = document.createElement('div'); rot.className='col';
+
+      const oImg = document.createElement('img'); oImg.src = `assets/Car Sprites/${name}`;
+      const cImg = document.createElement('img'); cImg.src = `assets/Car Sprites/cropped/${name}`;
+      const rImg = document.createElement('img'); rImg.src = `assets/Car Sprites/cropped/rotated/${name}`;
+
+      orig.appendChild(oImg); orig.appendChild(document.createElement('div')).textContent='Original';
+      crop.appendChild(cImg); crop.appendChild(document.createElement('div')).textContent='Cropped';
+      rot.appendChild(rImg); rot.appendChild(document.createElement('div')).textContent='Rotated';
+
+      row.appendChild(orig); row.appendChild(crop); row.appendChild(rot);
+      container.appendChild(row);
+    });
+  </script>
+</body>
+</html>
